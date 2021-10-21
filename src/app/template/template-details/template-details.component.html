@@ -1,0 +1,12 @@
+<section>
+  <h1>{{ (templateDetails$ | async)?.name }}</h1>
+  <h2>{{ (templateDetails$ | async)?.description }}</h2>
+  <mat-form-field appearance="fill">
+    <mat-label>Textarea</mat-label>
+    <textarea
+      [value]="(templateDetails$ | async)?.data"
+      cdkTextareaAutosize
+      matInput
+    ></textarea>
+  </mat-form-field>
+</section>

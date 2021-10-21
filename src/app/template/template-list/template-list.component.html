@@ -1,0 +1,51 @@
+<div class="example-container">
+  <div
+    *ngIf="isLoadingResults || isRateLimitReached"
+    class="example-loading-shade"
+  >
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+    <div *ngIf="isRateLimitReached" class="example-rate-limit-reached">
+      GitHub's API rate limit has been reached. It will be reset in one minute.
+    </div>
+  </div>
+  <div class="example-table-container">
+    <mat-table [dataSource]="templateDataSource" matSort>
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>
+          Name
+        </mat-header-cell>
+        <mat-cell *matCellDef="let element"
+          ><a [routerLink]="['/template', element.id]">{{ element.name }}</a>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef> Description</mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          {{ element.description }}
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row
+        (click)="selection.toggle(row)"
+        (mouseout)="row.hovered = false"
+        (mouseover)="row.hovered = true"
+        *matRowDef="let row; columns: displayedColumns"
+        [ngClass]="{
+          hovered: row.hovered,
+          highlighted: selection.isSelected(row)
+        }"
+      ></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      [length]="resultsLength"
+      [pageSizeOptions]="[5, 10, 25, 100]"
+      [pageSize]="10"
+      aria-label="Select page of GitHub search results"
+    ></mat-paginator>
+  </div>
+</div>
